@@ -1,0 +1,15 @@
+Package CompilerGenerator;
+
+helpers
+    digit = ['0' .. '9'];
+    add = '+';
+    sub = '-';
+    div = '/';
+    multi = '*';
+
+tokens
+    integer = digit +;
+    operation = add | sub div | multi;
+
+Productions
+    program = [left]: integer operation [right]: integer;

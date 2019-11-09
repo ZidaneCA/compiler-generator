@@ -1,0 +1,89 @@
+/*
+	filename   : generator.sable
+	created on : 5 nov. 2018
+	description: file is meant for work on intelIJ
+*/
+
+/* define package-prefix */
+Package Calculator;
+
+/* define token */
+Tokens
+	number = ['0' .. '9']+ ('.' ['0' .. '9']+) ?; /* To recognise decimal numbers (real numbers) and number = ['0' .. '9']+ for natural numbers only */
+	plus = '+';
+	minus = '-';
+	mult = '*';
+	div = '/';
+	mod = '%';
+	l_par = '(';
+	r_par = ')';
+    comma = ',';
+    equal = '=';
+	blank = (' ' | 13 | 10)+;
+	var = (['a' .. 'z'] | ['A' .. 'Z'] | '_')(['a' .. 'z'] | ['A' .. 'Z'] | '_' | ['0' .. '9'])*; /* var here corresponds to identifier (ID) */
+
+
+/* Tokens of functions which can be calculated */
+	sqrt = '\sqrt';
+	cos = '\cos';
+	sin = '\sin';
+    tan = '\tan';
+	exp = '\exp';
+	log = '\log';
+	power = '\power'; /* n-th root of x = \power(x,1/n) also \exp((1/n) * \ln(x) ) */
+	ln = '\ln';
+
+	acos = '\acos';
+	asin = '\asin';
+	atan = '\atan';
+	cosh = '\cosh';
+	sinh = '\sinh';
+	tanh = '\tanh';
+	fact = '\fact';
+	cbrt = '\cbrt';
+	affect = '\affect';
+
+
+/* Token to be ignored */
+Ignored Tokens
+	blank;
+
+Productions
+	expr
+		= {factor} factor
+		|{plus} expr plus factor
+		|{minus} expr minus factor;
+	factor
+		= {term} term
+		| {mult} factor mult term
+		| {div} factor div term
+		| {mod} factor mod term;
+
+	term
+		= {number} number
+		| {var} var
+		| {func} func
+		| {expr} l_par expr r_par;
+
+/* various functions here are;
+    square root, cube root, sin, cos, tan,
+    asin, acos, atan, sinh, cosh ,tanh,
+    log, ln, power, exponent and factorial */
+    func
+        = {sqrt} sqrt l_par expr r_par
+        | {cbrt} cbrt l_par expr r_par
+        | {sin} sin l_par expr r_par
+        | {tan} tan l_par expr r_par
+        | {sinh} sinh l_par expr r_par
+        | {tanh} tanh l_par expr r_par
+        | {asin} asin l_par expr r_par
+        | {atan} atan l_par expr r_par
+        | {log} log l_par expr r_par
+        | {ln} ln l_par expr r_par
+        | {exp} exp l_par expr r_par
+        | {cos} cos l_par expr r_par
+        | {acos} acos l_par expr r_par
+        | {cosh} cosh l_par expr r_par
+        | {power} power l_par expr comma factor r_par
+        | {affect} affect l_par var equal number r_par
+        | {fact} fact l_par expr r_par;
